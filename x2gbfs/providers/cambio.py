@@ -146,12 +146,19 @@ class CambioProvider(BaseProvider):
         """
         Guesses the propulsion type from vehicle name.
         """
+
+        def encode_station_name(name: str) -> str:
+            def map_char(c: str) -> str:
+                return c if c.isalnum() else '-'
+
+            return ''.join(map_char(c) for c in unidecode_with_german_umlauts(name).lower())
+
         match self.partner:
             case None:
-                station_name = unidecode_with_german_umlauts(elem['name'].lower()).replace(' ', '-')
+                station_name = encode_station_name(elem['name'])
                 station_url = f"https://www.cambio-carsharing.de/stationen/station/{station_name}-{elem['id']}"
             case 'stadtteilauto':
-                station_city = unidecode_with_german_umlauts(city).lower().replace(' ', '-')
+                station_city = encode_station_name(city)
                 station_url = f"https://www.stadtteilauto.com/de/privat/stationen/{station_city}/#station_{elem['id']}"
             case _:
                 raise RuntimeError(f"Unsupported partner '{self.partner}'")
