@@ -67,7 +67,7 @@ class CambioProvider(BaseProvider):
                 'station_id': station_id,
                 'address': f"{address.get('streetAddress')} {address.get('streetNumber')}",
                 'post_code': address.get('postalCode'),
-                'city': city,  # Non-standard
+                'city': city,  # Field standardized with v3.1-RC2
                 'rental_uris': rental_uris,
             }
 
