@@ -149,7 +149,13 @@ class CambioProvider(BaseProvider):
 
         def encode_station_name(name: str) -> str:
             def map_char(c: str) -> str:
-                return c if c.isalnum() else '-'
+                invalid_chars = ['\'']
+                if c.isalnum():
+                    return c
+                elif c in invalid_chars:
+                    return ''
+                else:
+                    return '-'
 
             return ''.join(map_char(c) for c in unidecode_with_german_umlauts(name).lower())
 
